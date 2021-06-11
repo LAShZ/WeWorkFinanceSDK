@@ -75,6 +75,9 @@ func (s *Client) GetChatData(seq uint64, limit uint64, proxy string, passwd stri
 		C.FreeSlice(chatSlice)
 	}()
 
+	if s.ptr == nil {
+		return nil, NewSDKErr(10002)
+	}
 	retC := C.GetChatData(s.ptr, C.ulonglong(seq), C.uint(limit), proxyC, passwdC, C.int(timeout), chatSlice)
 	ret := int(retC)
 	if ret != 0 {
